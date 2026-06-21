@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>黑白直播 · 简明观赛指南</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', Helvetica, Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1d2b3a;
+      line-height: 1.7;
+      padding: 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .page-wrap {
+      max-width: 860px;
+      width: 100%;
+    }
+
+    /* 网格卡片背景 (点缀) */
+    .grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background-image: 
+        linear-gradient(rgba(0, 148, 133, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 148, 133, 0.04) 1px, transparent 1px);
+      background-size: 2.5rem 2.5rem;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(2px);
+      border-radius: 2.5rem;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 12px 32px rgba(0, 40, 40, 0.06);
+    }
+
+    /* 蓝绿色点缀 */
+    .accent {
+      color: #0b7e74;
+    }
+
+    .accent-line {
+      display: block;
+      width: 48px;
+      height: 4px;
+      background: linear-gradient(90deg, #0b7e74, #30b8a0);
+      border-radius: 4px;
+      margin: 1rem 0 1.5rem 0;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+      color: #0a1e2b;
+    }
+
+    .subhead {
+      font-size: 1rem;
+      color: #3c5a67;
+      border-left: 3px solid #0b7e74;
+      padding-left: 1rem;
+      margin: 0.6rem 0 1.8rem 0;
+      font-weight: 380;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 550;
+      margin: 2rem 0 0.8rem 0;
+      color: #0a2b2b;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+    }
+
+    .intro-box {
+      background: #eef6f3;
+      padding: 1.2rem 1.5rem;
+      border-radius: 24px;
+      margin: 1.5rem 0;
+      border-left: 6px solid #0b7e74;
+    }
+
+    .intro-box p {
+      margin-bottom: 0.4rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 1.8rem 0;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 1.3rem 1.2rem;
+      box-shadow: 0 2px 12px rgba(0, 80, 70, 0.04);
+      border: 1px solid rgba(11, 126, 116, 0.08);
+      transition: all 0.15s ease;
+    }
+
+    .card:hover {
+      border-color: #0b7e74;
+      box-shadow: 0 6px 18px rgba(0, 128, 111, 0.07);
+    }
+
+    .card-title {
+      font-weight: 570;
+      color: #0d3630;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .card-title::before {
+      content: "▹";
+      color: #0b7e74;
+      font-weight: 600;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #1f3f44;
+      margin-bottom: 0;
+    }
+
+    /* 引用提示块 */
+    .notice-block {
+      background: #f3f9fc;
+      border-radius: 24px;
+      padding: 1.3rem 1.6rem;
+      margin: 1.8rem 0;
+      border: 1px dashed #30b8a0;
+      color: #14544b;
+      font-size: 0.98rem;
+    }
+
+    .notice-block strong {
+      color: #0b5f57;
+    }
+
+    .faq-mini {
+      margin-top: 2.2rem;
+      padding-top: 1rem;
+      border-top: 2px solid rgba(11, 126, 116, 0.15);
+    }
+
+    .faq-item {
+      margin-bottom: 0.8rem;
+    }
+
+    .faq-q {
+      font-weight: 550;
+      color: #0b3d38;
+    }
+
+    .faq-a {
+      color: #2e4d4d;
+      margin-left: 0.9rem;
+      border-left: 2px solid #b3ddd6;
+      padding-left: 0.9rem;
+    }
+
+    .link-sentence {
+      background: #e1f2ed;
+      padding: 0.9rem 1.3rem;
+      border-radius: 40px;
+      display: inline-block;
+      margin: 0.6rem 0 0.2rem 0;
+    }
+
+    a {
+      color: #0b7e74;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid rgba(11, 126, 116, 0.25);
+      transition: border-color 0.15s;
+    }
+
+    a:hover {
+      border-bottom-color: #0b7e74;
+    }
+
+    .footer-note {
+      margin-top: 2.5rem;
+      font-size: 0.9rem;
+      color: #3e6a64;
+      text-align: center;
+      border-top: 1px solid rgba(11, 126, 116, 0.15);
+      padding-top: 1.5rem;
+    }
+
+    /* 移动端响应 */
+    @media (max-width: 640px) {
+      body {
+        padding: 0.8rem;
+      }
+      .content {
+        padding: 1.4rem 1.2rem;
+        border-radius: 1.8rem;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .intro-box {
+        padding: 1rem;
+      }
+      .notice-block {
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .subhead {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="page-wrap">
+  <div class="content">
+
+    <!-- 文章标题 -->
+    <h1>黑白直播 · 简明观赛指南</h1>
+    <span class="accent-line"></span>
+    <div class="subhead">从赛场到屏幕：一份面向新观众的浏览提醒 &amp; 实用建议</div>
+
+    <!-- 导语段落 -->
+    <p>
+      对于刚接触体育直播的朋友来说，选择一个清晰、延迟低的平台往往需要一些尝试。 
+      <strong class="accent">黑白直播</strong> 作为聚合类观赛服务，其界面设计与信号调度方式有别于传统视频网站。
+      本文从几个基本维度拆解它的使用逻辑，并提供几条少有人提的访问提示。
+    </p>
+
+    <!-- 多段正文 + 引用 -->
+    <div class="intro-box">
+      <p><strong>▎ 信号来源与延迟</strong></p>
+      <p>多数频道采用第三方源转发，因此实际延迟通常在 15～60 秒之间，视具体赛事和线路而定。遇到卡顿时，切换备用线路是首选方案，而非反复刷新页面。</p>
+      <p style="margin-top:0.6rem;"><strong>▎ 界面导航逻辑</strong></p>
+      <p>首页按联赛/赛事分类，并非按时间轴排列。建议直接使用搜索或关注常看联赛，避免在冗长列表中翻找。</p>
+    </div>
+
+    <!-- 卡片特点 (网格) -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">无插件观看</div>
+        <p>基于 HLS/WebRTC 播放，无需额外安装客户端或解码器。但部分老旧浏览器可能需要更新。</p>
+      </div>
+      <div class="card">
+        <div class="card-title">多线路冗余</div>
+        <p>每场通常提供 2-4 条线路，标注为「高清」「流畅」等。高峰时段优先选择标注「备用」的线路。</p>
+      </div>
+      <div class="card">
+        <div class="card-title">移动端适配</div>
+        <p>页面采用响应式设计，但横屏模式下部分按钮可能被遮挡，建议竖屏全屏后锁定方向。</p>
+      </div>
+      <div class="card">
+        <div class="card-title">比赛回放碎片</div>
+        <p>不保证每场提供完整回放，但多数热门赛事会在结束后 2～4 小时内放出集锦或精简版。</p>
+      </div>
+    </div>
+
+    <!-- 引用提示 block -->
+    <div class="notice-block">
+      <strong>📌 访问提醒</strong> 使用公共 Wi-Fi 时，部分网络运营商可能会屏蔽非标端口或境外源。若出现黑屏/无限加载，可尝试切换至 4G/5G 网络，
+      或手动修改 DNS 为 <code>1.1.1.1</code> / <code>223.5.5.5</code>。另外，建议开启浏览器的“HTTPS 仅”模式以避免混合内容拦截。
+    </div>
+
+    <!-- 场景段落 (承接) -->
+    <h2>常见使用场景与节奏</h2>
+    <p>
+      以晚间黄金时段为例，服务器负载会明显上升。如果你正在观看焦点战，<strong class="accent">黑白直播</strong> 的线路切换功能会非常实用——
+      当一条线路出现缓冲时，不必等待，直接点击另一条标有相同赛事的链接即可。许多老用户习惯提前 5 分钟进入直播间，避开拥挤时段。
+    </p>
+    <p>
+      需要留意的是，部分赛事页面会嵌入聊天室或实时比分浮层，若觉得干扰视线，可在播放器设置中关闭弹幕/聊天气泡。
+      对于追求最低延迟的用户，可以尝试“音频线路”与“视频线路”分离的组合，但这一功能目前仅在桌面端 Chrome 下稳定。
+    </p>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-mini">
+      <h2 style="margin-top:0;">快速问答 · 摘要</h2>
+      <div class="faq-item">
+        <div class="faq-q">Q: 是否需要注册账号？</div>
+        <div class="faq-a">绝大多数频道可以直接观看，不需要登录。少数受限制的源可能会提示“需要验证”，通常与直播平台自身策略有关。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Q: 手机端无法全屏？</div>
+        <div class="faq-a">iOS 设备需关闭“静音模式”并确保 Safari 设置中“自动播放”未被禁用；安卓端 Chrome 可尝试开启桌面版网站。</div>
+      </div>
+    </div>
+
+    <!-- 访问句 (自然嵌入链接) -->
+    <p style="margin-top:1.8rem;">
+      如果你希望直接进入直播列表探索，可以在浏览器中打开 
+      <span class="link-sentence"><a href="https://main-hbzb.com">黑白直播</a></span> 
+      并收藏常用联赛标签页，下次访问时能节省不少翻找时间。
+    </p>
+
+    <!-- 结尾 -->
+    <div class="footer-note">
+      ⚡ 本文仅提供客观使用参考，不构成任何推荐或保证。实际体验可能因设备、网络及地区而异。
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
